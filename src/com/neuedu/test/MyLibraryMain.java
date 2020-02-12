@@ -1,5 +1,6 @@
 package com.neuedu.test;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,9 +8,16 @@ import java.util.Scanner;
 public class MyLibraryMain {
     public static MyBook[] books=new MyBook[200];
     public static  List<MyLibrary> list=new ArrayList<>();
+    public static File file = new File("h:/books");
 
     public static void main(String[] args) {
-        inputData(list);
+        if (!file.exists()){
+            inputData(list);
+            save();
+        }else {
+            read();
+        }
+
 //        print(list);
 //        addbook(list);
 //        print(list);
@@ -26,7 +34,7 @@ public class MyLibraryMain {
                 deleteName(list,name);
                 break;
             case 3:
-                System.out.println("请输入要删除的书名");
+                System.out.println("请输入要查找的书名");
                 String searchName=scanner.next();
                 searchName(list,searchName);
                 break;
@@ -73,6 +81,7 @@ public class MyLibraryMain {
 
     }
     public static void inputData(List<MyLibrary> libraries){
+        System.out.println("首次运行系统请输入初始化图书数量");
         Scanner scanner=new Scanner(System.in);
         int n=scanner.nextInt();
         for(int i=0; i<=n;i++){
@@ -104,6 +113,7 @@ public class MyLibraryMain {
             if (myLibrary.getName().equals(name)){
                 libraries.remove(i);
                 System.out.println("删除失败");
+                save();
                 menu();
                 return;
             }
@@ -125,6 +135,58 @@ public class MyLibraryMain {
         String bookISBN=scanner.next();
         MyLibrary myLibrary=new MyLibrary(name,price,press,author,bookISBN);
         libraries.add(myLibrary);
+        save();
         menu();
     }
+    public static void save(){
+        OutputStream out=null;
+        ObjectOutputStream objectout=null;
+
+        try {
+            out = new FileOutputStream(file);
+            objectout=new ObjectOutputStream(out);
+            objectout.writeObject(list);
+            objectout.flush();
+            out.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+         catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(objectout!=null);
+                    objectout.close();
+                if(out!=null);
+                    out.close();
+            } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    public static void read(){
+        InputStream inputStream=null;
+        ObjectInputStream objectInputStream=null;
+        try {
+            inputStream=new FileInputStream(file);
+            objectInputStream=new ObjectInputStream(inputStream);
+
+                list= (List<MyLibrary>)objectInputStream.readObject();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(objectInputStream!=null);
+                    objectInputStream.close();
+                if (inputStream!=null);
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 }
