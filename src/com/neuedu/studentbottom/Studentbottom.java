@@ -1,6 +1,7 @@
 package com.neuedu.studentbottom;
 
 import com.neuedu.imformation.Student;
+import com.neuedu.util.JdbcUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -53,17 +54,19 @@ public class Studentbottom implements IsStudentbottom {
 
     @Override
     public int add(Student student) {
-        return 0;
+        return JdbcUtil.executeUpdate("insert into student(Sname,Ssex,Sage,Sdept) values( ? ,?, ?, ?)",student.getSname(),student.getSsex(),student.getSage(),student.getSdept());
+
     }
 
     @Override
     public int update(Student student) {
-        return 0;
+        return JdbcUtil.executeUpdate("update student set Sname=?,Ssex=?,Sage=?,Sdept=? where Sno=?",student.getSname(),student.getSsex(),student.getSage(),student.getSdept());
     }
 
     @Override
     public int del(int Sno) {
-        return 0;
+
+        return JdbcUtil.executeUpdate("delete from student where Sno=?",Sno);
     }
 
     @Override

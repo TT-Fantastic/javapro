@@ -1,5 +1,6 @@
 package com.neuedu.studentservice;
 
+import com.neuedu.imformation.Column;
 import com.neuedu.imformation.Student;
 import com.neuedu.studentbottom.IsStudentbottom;
 import com.neuedu.studentbottom.Studentbottom;
@@ -15,17 +16,17 @@ public class StudentService implements IsStudentService {
 
     @Override
     public int add(Student student) {
-        return 0;
+        return studentbottom.add(student);
     }
 
     @Override
     public int update(Student student) {
-        return 0;
+        return studentbottom.update(student);
     }
 
     @Override
     public int del(int Sno) {
-        return 0;
+        return studentbottom.del(Sno);
     }
 
     @Override

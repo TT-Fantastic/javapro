@@ -6,6 +6,23 @@ public class Student {
     private String Ssex;
     private Integer Sage;
     private String Sdept;
+    public Student(){
+
+    }
+    public Student(String sname, String ssex, Integer sage, String sdept) {
+        Sname = sname;
+        Ssex = ssex;
+        Sage = sage;
+        Sdept = sdept;
+    }
+
+    public Student(Integer sno, String sname, String ssex, Integer sage, String sdept) {
+        Sno = sno;
+        Sname = sname;
+        Ssex = ssex;
+        Sage = sage;
+        Sdept = sdept;
+    }
 
     public Integer getSno() {
         return Sno;
