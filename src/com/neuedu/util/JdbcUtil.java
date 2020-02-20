@@ -20,7 +20,7 @@ public class JdbcUtil {
             e.printStackTrace();
         }
     }
-    static Connection getConnection(){
+     public static Connection getConnection(){
         Connection con=null;
         try {
             con= DriverManager.getConnection(URL,USERNAME,PASSWORD);
@@ -112,6 +112,31 @@ public class JdbcUtil {
             close(con,pstmt,rs);
         }
 
+        return list;
+    }
+    //封装的第二种方法
+    public  static <T> List<T> executeQuery(String sql,RowMap<T> rowMap,Object... parmas){
+        List<T> list=new ArrayList<>();
+        Connection con =getConnection();
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        try {
+            pstmt=con.prepareStatement(sql);
+            if (parmas!=null){
+               for (int i=0;i<parmas.length;i++){
+                   pstmt.setObject(i+1,parmas[i]);
+               }
+            }
+            rs=pstmt.executeQuery();
+            while (rs.next()){
+              T t = rowMap.rowMapping(rs);
+              list.add(t);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            close(con,pstmt,rs);
+        }
         return list;
     }
     //封装关闭方法
