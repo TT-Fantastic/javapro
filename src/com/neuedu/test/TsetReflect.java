@@ -107,7 +107,7 @@ public class TsetReflect {
         ResultSet rs=null;
         try {
             con.setAutoCommit(false);//每次执行完增删改，不能自动提交
-            con.setTransactionIsolation(2);//隔离级别为1允许脏读,读一个未提交的；级别为2读已提交
+            con.setTransactionIsolation(4);//隔离级别为1允许脏读,读一个未提交的；级别为2读已提交;级别为4可以重复读
             pstmt=con.prepareStatement("select  deptno,dname,loc from dept");
             rs=pstmt.executeQuery();
             while (rs.next()){
